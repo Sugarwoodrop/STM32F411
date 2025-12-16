@@ -24,6 +24,6 @@ int main (void) {
 void GPIOC_Init (void) {
 	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN; // Запуск GPIO PORT C
 	
-	GPIOC->MODER &= (~GPIO_MODER_MODE13_0 | GPIO_MODER_MODE13_1); // Зануляем PC13 - LED
+	GPIOC->MODER &= ~(GPIO_MODER_MODE13_0 | GPIO_MODER_MODE13_1); // Зануляем PC13 - LED
 	GPIOC->MODER |= GPIO_MODER_MODE13_0; // Делаем в режиме Output
 }
