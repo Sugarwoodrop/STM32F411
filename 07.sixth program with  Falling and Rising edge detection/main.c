@@ -62,9 +62,11 @@
 
 	void TIM2_IRQHandler(void){
 		TIM2->SR &= ~TIM_SR_UIF;  // Сброс флага
-		if (!(GPIOA->IDR & GPIO_IDR_ID0)) {
-			// Кнопка все еще нажата - это реальное нажатие
-			GPIOC->ODR ^= GPIO_ODR_OD13; 
+		if(wait_stat == 1){
+			if (!(GPIOA->IDR & GPIO_IDR_ID0)) {
+				// Кнопка все еще нажата - это реальное нажатие
+				GPIOC->ODR ^= GPIO_ODR_OD13; 
+			}
 		}
 		wait_stat = 0;
 		
@@ -89,8 +91,6 @@
 		else {
 			// кнопка отпущена значит сбрасываем таймер
 			wait_stat = 0;
-			TIM2->CR1 &= ~TIM_CR1_CEN;
-			TIM2->CNT = 0;
 		}
 		EXTI->PR |= EXTI_PR_PR0;  //Сбрасывает флаг прерывания EXTI, чтобы процессор не думал, что прерывание ещё активно.
 	}
