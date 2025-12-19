@@ -5,11 +5,6 @@ void delay (void){
 		__asm("nop");
 }
 
-void delayDebounce  (void){
-	for (uint32_t i=0; i < 100000; i++)
-		__asm("nop");
-}
-
 void GPIOC_Init (void);
 
 int main (void) {
@@ -18,11 +13,8 @@ int main (void) {
 
 	while (1) {
 		if(!(GPIOA->IDR & GPIO_IDR_ID0)){
-			delayDebounce(); //Ждём пока дребезг закончится
-			if(!(GPIOA->IDR & GPIO_IDR_ID0)){ //Проверяем до сих пор ли нажато
-				GPIOC->ODR &= ~GPIO_ODR_OD13; // Output Data Register 0 → LED ON
-				delay();
-			}
+			GPIOC->ODR &= ~GPIO_ODR_OD13; // Output Data Register 0 → LED ON
+			delay();
 		}
 		else{
 			GPIOC->ODR |= GPIO_ODR_OD13; // 1 → LED OFF
